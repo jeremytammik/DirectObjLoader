@@ -120,6 +120,7 @@ namespace DirectObjLoader
         foreach( Face f in result.Model.UngroupedFaces )
         {
           corners.Clear();
+
           foreach( Index i in f.Indices )
           {
             corners.Add( vertices[i.vertex] );
