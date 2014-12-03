@@ -8,6 +8,54 @@ namespace DirectObjLoader
   class Util
   {
     /// <summary>
+    /// Extract a true or false value from the given
+    /// string, accepting yes/no, Y/N, true/false, T/F
+    /// and 1/0. We are extremely tolerant, i.e., any
+    /// value starting with one of the characters y, n,
+    /// t or f is also accepted. Return false if no 
+    /// valid Boolean value can be extracted.
+    /// </summary>
+    public static bool GetTrueOrFalse(
+      string s,
+      out bool val )
+    {
+      val = false;
+
+      if( s.Equals( Boolean.TrueString,
+        StringComparison.OrdinalIgnoreCase ) )
+      {
+        val = true;
+        return true;
+      }
+      if( s.Equals( Boolean.FalseString,
+        StringComparison.OrdinalIgnoreCase ) )
+      {
+        return true;
+      }
+      if( s.Equals( "1" ) )
+      {
+        val = true;
+        return true;
+      }
+      if( s.Equals( "0" ) )
+      {
+        return true;
+      }
+      s = s.ToLower();
+
+      if( 't' == s[0] || 'y' == s[0] )
+      {
+        val = true;
+        return true;
+      }
+      if( 'f' == s[0] || 'n' == s[0] )
+      {
+        return true;
+      }
+      return false;
+    }
+
+    /// <summary>
     /// Select a specified file in the given folder.
     /// </summary>
     /// <param name="folder">Initial folder.</param>
