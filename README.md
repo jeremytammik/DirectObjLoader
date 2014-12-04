@@ -11,7 +11,7 @@ Sample fire hydrant OBJ file:
 
 Resulting DirectShape element in Revit model:
 
-![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/fire_hydrant_closed_directshape_rvt.png)
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/fire_hydrant_closed_directshape_rvt.jpg)
 
 
 Author
