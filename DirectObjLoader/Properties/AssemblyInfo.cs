@@ -32,5 +32,11 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "2015.0.0.0" )]
-[assembly: AssemblyFileVersion( "2015.0.0.0" )]
+//
+// Release history:
+//
+// 2014-12-02 2015.0.0.0 initial version with Eric Boehlke loaded fire hydrant
+// 2014-12-03 2015.0.0.1 added config class to store last folder between sessions
+//
+[assembly: AssemblyVersion( "2015.0.0.1" )]
+[assembly: AssemblyFileVersion( "2015.0.0.1" )]

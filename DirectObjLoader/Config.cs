@@ -11,6 +11,9 @@ namespace DirectObjLoader
 {
   class Config
   {
+    const string _defaultFolderObj = "defaultFolderObj";
+    const string _tryToCreateSolids = "tryToCreateSolids";
+
     static Configuration _config = null;
 
     static Configuration GetConfig()
@@ -25,15 +28,15 @@ namespace DirectObjLoader
 
       string[] keys = config.AppSettings.Settings.AllKeys;
 
-      if( !keys.Contains<string>( "DefaultFolderObj" ) )
+      if( !keys.Contains<string>( _defaultFolderObj ) )
       {
         config.AppSettings.Settings.Add(
-          "DefaultFolderObj", "C:/" );
+          _defaultFolderObj, Path.GetTempPath() );
       }
-      if( !keys.Contains<string>( "TryToCreateSolids" ) )
+      if( !keys.Contains<string>( _tryToCreateSolids ) )
       {
         config.AppSettings.Settings.Add(
-          "TryToCreateSolids", "true" );
+          _tryToCreateSolids, "true" );
       }
       return config;
     }
@@ -50,17 +53,20 @@ namespace DirectObjLoader
       }
     }
 
-    static string DefaultFolderObj 
-    { 
+    public static string DefaultFolderObj
+    {
       get
       {
-        return Settings["defaultFolderObj"].Value;
-      } 
+        return Settings[_defaultFolderObj].Value;
+      }
       set
       {
-        Settings["defaultFolderObj"].Value = value;
-
-        _config.Save( ConfigurationSaveMode.Modified );
+        string oldVal = DefaultFolderObj;
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_defaultFolderObj].Value = value;
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
       }
     }
 
@@ -70,19 +76,28 @@ namespace DirectObjLoader
       {
         bool rc;
 
-        Util.GetTrueOrFalse( 
-          Settings["tryToCreateSolids"].Value, 
+        Util.GetTrueOrFalse(
+          Settings[_tryToCreateSolids].Value,
           out rc );
 
         return rc;
       }
       set
       {
-        Settings["tryToCreateSolids"].Value = value
-          ? Boolean.TrueString.ToLower()
-          : Boolean.FalseString.ToLower();
+        bool oldVal;
 
-        _config.Save( ConfigurationSaveMode.Modified );
+        Util.GetTrueOrFalse(
+          Settings[_tryToCreateSolids].Value,
+          out oldVal );
+
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_tryToCreateSolids].Value = value
+            ? Boolean.TrueString.ToLower()
+            : Boolean.FalseString.ToLower();
+
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
       }
     }
   }

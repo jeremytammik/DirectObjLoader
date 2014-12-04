@@ -22,8 +22,8 @@ namespace DirectObjLoader
         .Location;
 
       RibbonItemData i1 = new PushButtonData(
-          "DirectObjLoader_Command", 
-          "DirectShape OBJ Loader",
+          "DirectObjLoader_Command",
+          "DirectShape\r\nOBJ Loader",
           path, "DirectObjLoader.Command" );
 
       i1.ToolTip = "Load a WaveFront OBJ file into a "

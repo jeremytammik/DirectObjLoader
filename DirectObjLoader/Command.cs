@@ -31,8 +31,8 @@ namespace DirectObjLoader
     /// <summary>
     /// Define initial OBJ file folder.
     /// </summary>
-    static string _obj_folder_name
-      = Path.GetTempPath();
+    //static string _obj_folder_name
+    //  = Path.GetTempPath();
 
     public Result Execute(
       ExternalCommandData commandData,
@@ -43,23 +43,26 @@ namespace DirectObjLoader
         = new JtWindowHandle(
           ComponentManager.ApplicationWindow );
 
-      if( !Util.FileSelectObj( _obj_folder_name,
+      if( !Util.FileSelectObj(
+        Config.DefaultFolderObj,
         ref _filename ) )
       {
         return Result.Cancelled;
       }
 
-      _obj_folder_name = Path.GetDirectoryName(
-        _filename );
+      Config.DefaultFolderObj
+        = Path.GetDirectoryName( _filename );
 
       bool loadTextureImages = true;
 
-      var result = FileFormatObj.Load( _filename, loadTextureImages );
+      var result = FileFormatObj.Load(
+        _filename, loadTextureImages );
 
       foreach( var m in result.Messages )
       {
-        Debug.Print( "{0}: {1}", m.MessageType, m.Details );
-        Debug.Print( "{0}: {1}", m.FileName, m.LineNumber );
+        Debug.Print( "{0}: {1} line {2} in {3}",
+          m.MessageType, m.Details,
+          m.FileName, m.LineNumber );
       }
 
       // Convert OBJ vertices to Revit XYZ.
@@ -83,7 +86,7 @@ namespace DirectObjLoader
         Debug.Assert( 3 == n || 4 == n,
           "expected triagles or quadrilaterals" );
 
-        Debug.Print( string.Join( ", ", 
+        Debug.Print( string.Join( ", ",
           f.Indices.ToString() ) );
       }
 
@@ -126,7 +129,7 @@ namespace DirectObjLoader
             corners.Add( vertices[i.vertex] );
           }
 
-          builder.AddFace( new TessellatedFace( corners, 
+          builder.AddFace( new TessellatedFace( corners,
             ElementId.InvalidElementId ) );
         }
 
