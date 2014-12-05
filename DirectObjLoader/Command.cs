@@ -9,7 +9,6 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
 using Autodesk.Windows;
 using FileFormatWavefront;
 using FileFormatWavefront.Model;
@@ -137,8 +136,10 @@ namespace DirectObjLoader
 
         TessellatedShapeBuilderResult r
           = builder.Build(
-            TessellatedShapeBuilderTarget.Solid,
-            TessellatedShapeBuilderFallback.Abort,
+            //TessellatedShapeBuilderTarget.Solid,
+            TessellatedShapeBuilderTarget.Mesh,
+            //TessellatedShapeBuilderFallback.Abort,
+            TessellatedShapeBuilderFallback.Salvage,
             graphicsStyleId );
 
         ElementId categoryId = new ElementId(
