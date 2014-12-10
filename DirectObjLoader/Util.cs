@@ -1,12 +1,25 @@
 ﻿#region Namespaces
 using System;
 using System.Windows.Forms;
+using Autodesk.Revit.DB;
 #endregion // Namespaces
 
 namespace DirectObjLoader
 {
   class Util
   {
+    public static string RealString( double a )
+    {
+      return a.ToString( "0.##" );
+    }
+
+    public static string PointString( XYZ p )
+    {
+      return string.Format( "({0},{1},{2})",
+        RealString( p.X ), RealString( p.Y ),
+        RealString( p.Z ) );
+    }
+
     /// <summary>
     /// Extract a true or false value from the given
     /// string, accepting yes/no, Y/N, true/false, T/F

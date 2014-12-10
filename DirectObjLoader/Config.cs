@@ -12,6 +12,7 @@ namespace DirectObjLoader
   class Config
   {
     const string _defaultFolderObj = "defaultFolderObj";
+    const string _inputScaleFactor = "inputScaleFactor";
     const string _tryToCreateSolids = "tryToCreateSolids";
 
     static Configuration _config = null;
@@ -32,6 +33,11 @@ namespace DirectObjLoader
       {
         config.AppSettings.Settings.Add(
           _defaultFolderObj, Path.GetTempPath() );
+      }
+      if( !keys.Contains<string>( _inputScaleFactor ) )
+      {
+        config.AppSettings.Settings.Add(
+          _inputScaleFactor, "1.0" );
       }
       if( !keys.Contains<string>( _tryToCreateSolids ) )
       {
@@ -65,6 +71,32 @@ namespace DirectObjLoader
         if( !value.Equals( oldVal ) )
         {
           Settings[_defaultFolderObj].Value = value;
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
+      }
+    }
+
+    public static double InputScaleFactor
+    {
+      get
+      {
+        double f;
+        try
+        {
+          f = double.Parse( Settings[_inputScaleFactor].Value );
+        }
+        catch( System.FormatException )
+        {
+          f = 1.0;
+        }
+        return f;
+      }
+      set
+      {
+        string oldVal = DefaultFolderObj;
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_inputScaleFactor].Value = value.ToString();
           _config.Save( ConfigurationSaveMode.Modified );
         }
       }

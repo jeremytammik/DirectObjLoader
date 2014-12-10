@@ -68,14 +68,25 @@ namespace DirectObjLoader
       // OBJ assumes X to the right, Y up and Z out of the screen.
       // Revit 3D view assumes X right, Y away from the screen and Z up.
 
+      double scale = Config.InputScaleFactor;
+
       int n = result.Model.Vertices.Count;
 
       List<XYZ> vertices = new List<XYZ>( n );
+      XYZ w;
 
       foreach( Vertex v in result.Model.Vertices )
       {
-        Debug.Print( "v {0} {1} {2}", v.x, v.y, v.z );
-        vertices.Add( new XYZ( v.x, -v.z, v.y ) );
+        w = new XYZ( v.x * scale, 
+          -v.z * scale, v.y * scale );
+
+        Debug.Print( "({0},{1},{2}) --> {3}", 
+          Util.RealString( v.x ), 
+          Util.RealString( v.y ), 
+          Util.RealString( v.z ),
+          Util.PointString( w ) );
+
+        vertices.Add( w );
       }
 
       foreach( Face f in result.Model.UngroupedFaces )
