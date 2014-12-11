@@ -153,28 +153,31 @@ namespace DirectObjLoader
         {
           message = "Zero faces";
         }
-        builder.CloseConnectedFaceSet();
+        else
+        {
+          builder.CloseConnectedFaceSet();
 
-        TessellatedShapeBuilderResult r
-          = builder.Build(
+          TessellatedShapeBuilderResult r
+            = builder.Build(
             //TessellatedShapeBuilderTarget.Solid,
-            TessellatedShapeBuilderTarget.Mesh,
+              TessellatedShapeBuilderTarget.Mesh,
             //TessellatedShapeBuilderFallback.Abort,
-            TessellatedShapeBuilderFallback.Salvage,
-            graphicsStyleId );
+              TessellatedShapeBuilderFallback.Salvage,
+              graphicsStyleId );
 
-        ElementId categoryId = new ElementId(
-          BuiltInCategory.OST_GenericModel );
+          ElementId categoryId = new ElementId(
+            BuiltInCategory.OST_GenericModel );
 
-        DirectShape ds = DirectShape.CreateElement(
-          doc, categoryId, "A", "B" );
+          DirectShape ds = DirectShape.CreateElement(
+            doc, categoryId, "A", "B" );
 
-        ds.SetShape( r.GetGeometricalObjects() );
+          ds.SetShape( r.GetGeometricalObjects() );
 
-        ds.Name = "Test";
-        tx.Commit();
+          ds.Name = "Test";
+          tx.Commit();
 
-        rc = Result.Succeeded;
+          rc = Result.Succeeded;
+        }
       }
       return rc;
     }
