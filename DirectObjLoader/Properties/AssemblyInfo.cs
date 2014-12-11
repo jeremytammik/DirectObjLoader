@@ -41,6 +41,8 @@ using System.Runtime.InteropServices;
 // 2014-12-10 2015.0.0.3 implemented input scaling factor stored in config file, cf. gargoyle2.png
 // 2014-12-11 2015.0.0.4 added face count and error message on zero faces
 // 2014-12-11 2015.0.0.5 added initial primitive test support for groups as well as ungrouped faces, result directobjloader_shopping_cart_groups.png
+// 2014-12-11 2015.0.0.6 call OpenConnectedFaceSet for each OBJ group, result directobjloader_shopping_cart_groups_2.png
+// 2014-12-11 2015.0.0.6 name DirectShape element same as input file
 //
-[assembly: AssemblyVersion( "2015.0.0.5" )]
-[assembly: AssemblyFileVersion( "2015.0.0.5" )]
+[assembly: AssemblyVersion( "2015.0.0.6" )]
+[assembly: AssemblyFileVersion( "2015.0.0.6" )]

@@ -125,27 +125,33 @@ namespace DirectObjLoader
 
         int nFaces = 0;
 
-        builder.OpenConnectedFaceSet( false );
-
         List<XYZ> corners = new List<XYZ>( 4 );
 
-        foreach( Face f in result.Model.UngroupedFaces )
+        if( 0 < result.Model.UngroupedFaces.Count )
         {
-          corners.Clear();
+          builder.OpenConnectedFaceSet( false );
 
-          foreach( Index i in f.Indices )
+          foreach( Face f in result.Model.UngroupedFaces )
           {
-            corners.Add( vertices[i.vertex] );
+            corners.Clear();
+
+            foreach( Index i in f.Indices )
+            {
+              corners.Add( vertices[i.vertex] );
+            }
+
+            builder.AddFace( new TessellatedFace( corners,
+              ElementId.InvalidElementId ) );
+
+            ++nFaces;
           }
-
-          builder.AddFace( new TessellatedFace( corners,
-            ElementId.InvalidElementId ) );
-
-          ++nFaces;
+          builder.CloseConnectedFaceSet();
         }
 
         foreach( Group g in result.Model.Groups )
         {
+          builder.OpenConnectedFaceSet( false );
+
           foreach( Face f in g.Faces )
           {
             corners.Clear();
@@ -160,6 +166,7 @@ namespace DirectObjLoader
 
             ++nFaces;
           }
+          builder.CloseConnectedFaceSet();
         }
 
         if( 0 == nFaces )
@@ -168,8 +175,6 @@ namespace DirectObjLoader
         }
         else
         {
-          builder.CloseConnectedFaceSet();
-
           // Refer to StlImport sample for more clever 
           // handling of target and fallback.
 
@@ -189,7 +194,9 @@ namespace DirectObjLoader
 
           ds.SetShape( r.GetGeometricalObjects() );
 
-          ds.Name = "Test";
+          ds.Name = Path.GetFileNameWithoutExtension( 
+            _filename );
+
           tx.Commit();
 
           rc = Result.Succeeded;
