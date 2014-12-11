@@ -28,12 +28,6 @@ namespace DirectObjLoader
     /// </summary>
     static string _filename = string.Empty;
 
-    /// <summary>
-    /// Define initial OBJ file folder.
-    /// </summary>
-    //static string _obj_folder_name
-    //  = Path.GetTempPath();
-
     public Result Execute(
       ExternalCommandData commandData,
       ref string message,
@@ -176,11 +170,14 @@ namespace DirectObjLoader
         {
           builder.CloseConnectedFaceSet();
 
+          // Refer to StlImport sample for more clever 
+          // handling of target and fallback.
+
           TessellatedShapeBuilderResult r
             = builder.Build(
-            //TessellatedShapeBuilderTarget.Solid,
+              //TessellatedShapeBuilderTarget.Solid,
               TessellatedShapeBuilderTarget.Mesh,
-            //TessellatedShapeBuilderFallback.Abort,
+              //TessellatedShapeBuilderFallback.Abort,
               TessellatedShapeBuilderFallback.Salvage,
               graphicsStyleId );
 
