@@ -13,6 +13,7 @@ using Autodesk.Windows;
 using FileFormatWavefront;
 using FileFormatWavefront.Model;
 using Face = FileFormatWavefront.Model.Face;
+using Group = FileFormatWavefront.Model.Group;
 //using RvtFace = Autodesk.Revit.DB.Face;
 #endregion
 
@@ -147,6 +148,24 @@ namespace DirectObjLoader
             ElementId.InvalidElementId ) );
 
           ++nFaces;
+        }
+
+        foreach( Group g in result.Model.Groups )
+        {
+          foreach( Face f in g.Faces )
+          {
+            corners.Clear();
+
+            foreach( Index i in f.Indices )
+            {
+              corners.Add( vertices[i.vertex] );
+            }
+
+            builder.AddFace( new TessellatedFace( corners,
+              ElementId.InvalidElementId ) );
+
+            ++nFaces;
+          }
         }
 
         if( 0 == nFaces )

@@ -40,6 +40,7 @@ using System.Runtime.InteropServices;
 // 2014-12-05 2015.0.0.2 use mesh + salvage instead of solid + abort when building the DirectShape per suggestion from angel velez via eric boehlke and gargoyle is now successfully loaded
 // 2014-12-10 2015.0.0.3 implemented input scaling factor stored in config file, cf. gargoyle2.png
 // 2014-12-11 2015.0.0.4 added face count and error message on zero faces
+// 2014-12-11 2015.0.0.5 added initial primitive test support for groups as well as ungrouped faces, result directobjloader_shopping_cart_groups.png
 //
-[assembly: AssemblyVersion( "2015.0.0.4" )]
-[assembly: AssemblyFileVersion( "2015.0.0.4" )]
+[assembly: AssemblyVersion( "2015.0.0.5" )]
+[assembly: AssemblyFileVersion( "2015.0.0.5" )]
