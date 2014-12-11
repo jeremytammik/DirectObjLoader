@@ -120,11 +120,15 @@ namespace DirectObjLoader
         graphicsStyleId = style.Id;
       }
 
+      Result rc = Result.Failed;
+
       using( Transaction tx = new Transaction( doc ) )
       {
         tx.Start( "Create DirectShape from OBJ" );
 
         TessellatedShapeBuilder builder = new TessellatedShapeBuilder();
+
+        int nFaces = 0;
 
         builder.OpenConnectedFaceSet( false );
 
@@ -141,8 +145,14 @@ namespace DirectObjLoader
 
           builder.AddFace( new TessellatedFace( corners,
             ElementId.InvalidElementId ) );
+
+          ++nFaces;
         }
 
+        if( 0 == nFaces )
+        {
+          message = "Zero faces";
+        }
         builder.CloseConnectedFaceSet();
 
         TessellatedShapeBuilderResult r
@@ -163,8 +173,10 @@ namespace DirectObjLoader
 
         ds.Name = "Test";
         tx.Commit();
+
+        rc = Result.Succeeded;
       }
-      return Result.Succeeded;
+      return rc;
     }
   }
 }

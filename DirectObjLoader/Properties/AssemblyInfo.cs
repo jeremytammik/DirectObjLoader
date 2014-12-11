@@ -39,6 +39,7 @@ using System.Runtime.InteropServices;
 // 2014-12-03 2015.0.0.1 added config class to store last folder between sessions
 // 2014-12-05 2015.0.0.2 use mesh + salvage instead of solid + abort when building the DirectShape per suggestion from angel velez via eric boehlke and gargoyle is now successfully loaded
 // 2014-12-10 2015.0.0.3 implemented input scaling factor stored in config file, cf. gargoyle2.png
+// 2014-12-11 2015.0.0.4 added face count and error message on zero faces
 //
-[assembly: AssemblyVersion( "2015.0.0.3" )]
-[assembly: AssemblyFileVersion( "2015.0.0.3" )]
+[assembly: AssemblyVersion( "2015.0.0.4" )]
+[assembly: AssemblyFileVersion( "2015.0.0.4" )]

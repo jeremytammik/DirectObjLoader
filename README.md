@@ -18,6 +18,12 @@ Input scaling factor 1 versus 0.5 happily produces a gargoyle and a half:
 ![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/gargoyle2.png)
 
 
+Wish List
+---------
+
+- Progress bar
+
+
 Author
 ------
 
