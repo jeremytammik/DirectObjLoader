@@ -205,9 +205,13 @@ namespace DirectObjLoader
 
         foreach( Group g in result.Model.Groups )
         {
-          nFaces += NewDirectShape( vertices, g.Faces, 
-            doc, graphicsStyleId, appGuid, shapeName
-            + string.Join( ".", g.Names ) );
+          string s = string.Join( ".", g.Names );
+
+          if( 0 < s.Length ) { s = "." + s; }
+
+          nFaces += NewDirectShape( vertices, g.Faces,
+            doc, graphicsStyleId, appGuid, shapeName 
+            + s );
         }
 
         if( 0 == nFaces )

@@ -43,6 +43,7 @@ using System.Runtime.InteropServices;
 // 2014-12-11 2015.0.0.5 added initial primitive test support for groups as well as ungrouped faces, result directobjloader_shopping_cart_groups.png
 // 2014-12-11 2015.0.0.6 call OpenConnectedFaceSet for each OBJ group, result directobjloader_shopping_cart_groups_2.png
 // 2014-12-11 2015.0.0.6 name DirectShape element same as input file
+// 2014-12-12 2015.0.0.7 create separate DirectShape element for each OBJ group, add appGuid and name shapes better, result directobjloader_shopping_cart_groups_3.png
 //
-[assembly: AssemblyVersion( "2015.0.0.6" )]
-[assembly: AssemblyFileVersion( "2015.0.0.6" )]
+[assembly: AssemblyVersion( "2015.0.0.7" )]
+[assembly: AssemblyFileVersion( "2015.0.0.7" )]
