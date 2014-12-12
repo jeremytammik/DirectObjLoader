@@ -17,6 +17,10 @@ Input scaling factor 1 versus 0.5 happily produces a gargoyle and a half:
 
 ![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/gargoyle2.png)
 
+OBJ files defining groups generate a separate DirectShape element for each one:
+
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/cart_groups_3.png)
+
 
 Wish List
 ---------
