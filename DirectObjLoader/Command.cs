@@ -14,6 +14,7 @@ using FileFormatWavefront;
 using FileFormatWavefront.Model;
 using Face = FileFormatWavefront.Model.Face;
 using Group = FileFormatWavefront.Model.Group;
+using FaceCollection = System.Collections.ObjectModel.ReadOnlyCollection<FileFormatWavefront.Model.Face>;
 //using RvtFace = Autodesk.Revit.DB.Face;
 #endregion
 
@@ -28,6 +29,72 @@ namespace DirectObjLoader
     /// </summary>
     static string _filename = string.Empty;
 
+    /// <summary>
+    /// Category to use for the DirectShape elements
+    /// generated.
+    /// </summary>
+    static ElementId _categoryId = new ElementId(
+      BuiltInCategory.OST_GenericModel );
+
+    /// <summary>
+    /// Create a new DirectShape element from given
+    /// list of faces and return the number of faces
+    /// processed.
+    /// </summary>
+    static int NewDirectShape( 
+      List<XYZ> vertices,
+      FaceCollection faces,
+      Document doc,
+      ElementId graphicsStyleId,
+      string appGuid,
+      string shapeName )
+    {
+      int nFaces = 0;
+
+      TessellatedShapeBuilder builder 
+        = new TessellatedShapeBuilder();
+
+      List<XYZ> corners = new List<XYZ>( 4 );
+
+      builder.OpenConnectedFaceSet( false );
+
+      foreach( Face f in faces )
+      {
+        corners.Clear();
+
+        foreach( Index i in f.Indices )
+        {
+          corners.Add( vertices[i.vertex] );
+        }
+
+        builder.AddFace( new TessellatedFace( corners,
+          ElementId.InvalidElementId ) );
+
+        ++nFaces;
+      }
+      builder.CloseConnectedFaceSet();
+
+      // Refer to StlImport sample for more clever 
+      // handling of target and fallback.
+
+      TessellatedShapeBuilderResult r
+        = builder.Build(
+          TessellatedShapeBuilderTarget.Mesh, // Solid
+          TessellatedShapeBuilderFallback.Salvage, // Abort
+          graphicsStyleId );
+
+      DirectShape ds = DirectShape.CreateElement(
+        doc, _categoryId, appGuid, shapeName );
+
+      ds.SetShape( r.GetGeometricalObjects() );
+      ds.Name = shapeName;
+
+      return nFaces;
+    }
+
+    /// <summary>
+    /// External command mainline.
+    /// </summary>
     public Result Execute(
       ExternalCommandData commandData,
       ref string message,
@@ -99,6 +166,12 @@ namespace DirectObjLoader
       UIDocument uidoc = uiapp.ActiveUIDocument;
       Document doc = uidoc.Document;
 
+      string appGuid 
+        = uiapp.ActiveAddInId.GetGUID().ToString();
+
+      string shapeName 
+        = Path.GetFileNameWithoutExtension( _filename );
+
       // Find GraphicsStyle
 
       FilteredElementCollector collector
@@ -121,52 +194,56 @@ namespace DirectObjLoader
       {
         tx.Start( "Create DirectShape from OBJ" );
 
-        TessellatedShapeBuilder builder = new TessellatedShapeBuilder();
+        //TessellatedShapeBuilder builder = new TessellatedShapeBuilder();
 
         int nFaces = 0;
 
-        List<XYZ> corners = new List<XYZ>( 4 );
+        //List<XYZ> corners = new List<XYZ>( 4 );
 
         if( 0 < result.Model.UngroupedFaces.Count )
         {
-          builder.OpenConnectedFaceSet( false );
+          //builder.OpenConnectedFaceSet( false );
 
-          foreach( Face f in result.Model.UngroupedFaces )
-          {
-            corners.Clear();
+          //foreach( Face f in result.Model.UngroupedFaces )
+          //{
+          //  corners.Clear();
 
-            foreach( Index i in f.Indices )
-            {
-              corners.Add( vertices[i.vertex] );
-            }
+          //  foreach( Index i in f.Indices )
+          //  {
+          //    corners.Add( vertices[i.vertex] );
+          //  }
 
-            builder.AddFace( new TessellatedFace( corners,
-              ElementId.InvalidElementId ) );
+          //  builder.AddFace( new TessellatedFace( corners,
+          //    ElementId.InvalidElementId ) );
 
-            ++nFaces;
-          }
-          builder.CloseConnectedFaceSet();
+          //  ++nFaces;
+          //}
+          //builder.CloseConnectedFaceSet();
+
+          nFaces += NewDirectShape( vertices, result.Model.UngroupedFaces, doc, graphicsStyleId, appGuid, shapeName );
         }
 
         foreach( Group g in result.Model.Groups )
         {
-          builder.OpenConnectedFaceSet( false );
+          //builder.OpenConnectedFaceSet( false );
 
-          foreach( Face f in g.Faces )
-          {
-            corners.Clear();
+          //foreach( Face f in g.Faces )
+          //{
+          //  corners.Clear();
 
-            foreach( Index i in f.Indices )
-            {
-              corners.Add( vertices[i.vertex] );
-            }
+          //  foreach( Index i in f.Indices )
+          //  {
+          //    corners.Add( vertices[i.vertex] );
+          //  }
 
-            builder.AddFace( new TessellatedFace( corners,
-              ElementId.InvalidElementId ) );
+          //  builder.AddFace( new TessellatedFace( corners,
+          //    ElementId.InvalidElementId ) );
 
-            ++nFaces;
-          }
-          builder.CloseConnectedFaceSet();
+          //  ++nFaces;
+          //}
+          //builder.CloseConnectedFaceSet();
+
+          nFaces += NewDirectShape( vertices, g.Faces, doc, graphicsStyleId, appGuid, shapeName );
         }
 
         if( 0 == nFaces )
@@ -175,27 +252,22 @@ namespace DirectObjLoader
         }
         else
         {
-          // Refer to StlImport sample for more clever 
-          // handling of target and fallback.
+          //// Refer to StlImport sample for more clever 
+          //// handling of target and fallback.
 
-          TessellatedShapeBuilderResult r
-            = builder.Build(
-              //TessellatedShapeBuilderTarget.Solid,
-              TessellatedShapeBuilderTarget.Mesh,
-              //TessellatedShapeBuilderFallback.Abort,
-              TessellatedShapeBuilderFallback.Salvage,
-              graphicsStyleId );
+          //TessellatedShapeBuilderResult r
+          //  = builder.Build(
+          //    //TessellatedShapeBuilderTarget.Solid,
+          //    TessellatedShapeBuilderTarget.Mesh,
+          //    //TessellatedShapeBuilderFallback.Abort,
+          //    TessellatedShapeBuilderFallback.Salvage,
+          //    graphicsStyleId );
 
-          ElementId categoryId = new ElementId(
-            BuiltInCategory.OST_GenericModel );
+          //DirectShape ds = DirectShape.CreateElement(
+          //  doc, _categoryId, appGUID, shapeName );
 
-          DirectShape ds = DirectShape.CreateElement(
-            doc, categoryId, "A", "B" );
-
-          ds.SetShape( r.GetGeometricalObjects() );
-
-          ds.Name = Path.GetFileNameWithoutExtension( 
-            _filename );
+          //ds.SetShape( r.GetGeometricalObjects() );
+          //ds.Name = shapeName;
 
           tx.Commit();
 
