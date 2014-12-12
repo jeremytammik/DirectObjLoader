@@ -194,56 +194,20 @@ namespace DirectObjLoader
       {
         tx.Start( "Create DirectShape from OBJ" );
 
-        //TessellatedShapeBuilder builder = new TessellatedShapeBuilder();
-
         int nFaces = 0;
-
-        //List<XYZ> corners = new List<XYZ>( 4 );
 
         if( 0 < result.Model.UngroupedFaces.Count )
         {
-          //builder.OpenConnectedFaceSet( false );
-
-          //foreach( Face f in result.Model.UngroupedFaces )
-          //{
-          //  corners.Clear();
-
-          //  foreach( Index i in f.Indices )
-          //  {
-          //    corners.Add( vertices[i.vertex] );
-          //  }
-
-          //  builder.AddFace( new TessellatedFace( corners,
-          //    ElementId.InvalidElementId ) );
-
-          //  ++nFaces;
-          //}
-          //builder.CloseConnectedFaceSet();
-
-          nFaces += NewDirectShape( vertices, result.Model.UngroupedFaces, doc, graphicsStyleId, appGuid, shapeName );
+          nFaces += NewDirectShape( vertices, 
+            result.Model.UngroupedFaces, doc, 
+            graphicsStyleId, appGuid, shapeName );
         }
 
         foreach( Group g in result.Model.Groups )
         {
-          //builder.OpenConnectedFaceSet( false );
-
-          //foreach( Face f in g.Faces )
-          //{
-          //  corners.Clear();
-
-          //  foreach( Index i in f.Indices )
-          //  {
-          //    corners.Add( vertices[i.vertex] );
-          //  }
-
-          //  builder.AddFace( new TessellatedFace( corners,
-          //    ElementId.InvalidElementId ) );
-
-          //  ++nFaces;
-          //}
-          //builder.CloseConnectedFaceSet();
-
-          nFaces += NewDirectShape( vertices, g.Faces, doc, graphicsStyleId, appGuid, shapeName );
+          nFaces += NewDirectShape( vertices, g.Faces, 
+            doc, graphicsStyleId, appGuid, shapeName
+            + string.Join( ".", g.Names ) );
         }
 
         if( 0 == nFaces )
@@ -252,23 +216,6 @@ namespace DirectObjLoader
         }
         else
         {
-          //// Refer to StlImport sample for more clever 
-          //// handling of target and fallback.
-
-          //TessellatedShapeBuilderResult r
-          //  = builder.Build(
-          //    //TessellatedShapeBuilderTarget.Solid,
-          //    TessellatedShapeBuilderTarget.Mesh,
-          //    //TessellatedShapeBuilderFallback.Abort,
-          //    TessellatedShapeBuilderFallback.Salvage,
-          //    graphicsStyleId );
-
-          //DirectShape ds = DirectShape.CreateElement(
-          //  doc, _categoryId, appGUID, shapeName );
-
-          //ds.SetShape( r.GetGeometricalObjects() );
-          //ds.Name = shapeName;
-
           tx.Commit();
 
           rc = Result.Succeeded;
