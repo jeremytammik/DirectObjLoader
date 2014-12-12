@@ -169,8 +169,9 @@ namespace DirectObjLoader
       string appGuid 
         = uiapp.ActiveAddInId.GetGUID().ToString();
 
-      string shapeName 
-        = Path.GetFileNameWithoutExtension( _filename );
+      string shapeName = Util.Capitalize(
+        Path.GetFileNameWithoutExtension( _filename )
+          .Replace( '_', ' ' ) );
 
       // Find GraphicsStyle
 

@@ -1,5 +1,6 @@
 ﻿#region Namespaces
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
 #endregion // Namespaces
@@ -8,6 +9,22 @@ namespace DirectObjLoader
 {
   class Util
   {
+    // JavaScript sample implementations:
+    // capitalize:function(){return this.replace(/\b[a-z]/g,function(match){return match.toUpperCase();});}
+    // capitalize: function() { return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase(); }
+
+    /// <summary>
+    /// Ensure that each space delimited word in the 
+    /// given string has an upper case first character.
+    /// </summary>
+    public static string Capitalize( string s )
+    {
+      return string.Join( " ", s.Split( null )
+        .Select<string, string>( a
+          => a.Substring( 0, 1 ).ToUpper() 
+            + a.Substring( 1 ) ) );
+    }
+
     public static string RealString( double a )
     {
       return a.ToString( "0.##" );
