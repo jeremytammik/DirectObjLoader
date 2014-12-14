@@ -26,6 +26,8 @@ Wish List
 ---------
 
 - Progress bar
+- Support for materials, minimally colour, preferably textures
+- Support for the options provided by [StlImport](https://github.com/jeremytammik/StlImport)
 
 
 Author
