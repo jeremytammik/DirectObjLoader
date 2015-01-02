@@ -40,6 +40,9 @@ namespace DirectObjLoader
     /// Create a new DirectShape element from given
     /// list of faces and return the number of faces
     /// processed.
+    /// Return -1 if a face vertex index exceeds the
+    /// total number of available vertices, 
+    /// representing a fatal error.
     /// </summary>
     static int NewDirectShape(
       List<XYZ> vertices,
@@ -75,6 +78,11 @@ namespace DirectObjLoader
         {
           Debug.Assert( vertices.Count > i.vertex,
             "how can the face vertex index be larger than the total number of vertices?" );
+
+          if( i.vertex >= vertices.Count )
+          {
+            return -1;
+          }
 
           corners.Add( vertices[i.vertex] );
         }
@@ -213,28 +221,44 @@ namespace DirectObjLoader
         tx.Start( "Create DirectShape from OBJ" );
 
         int nFaces = 0;
+        int nFacesTotal = 0;
 
         if( 0 < result.Model.UngroupedFaces.Count )
         {
-          nFaces += NewDirectShape( vertices,
+          nFaces = NewDirectShape( vertices,
             result.Model.UngroupedFaces, doc,
             graphicsStyleId, appGuid, shapeName );
         }
 
-        foreach( Group g in result.Model.Groups )
+        if( -1 < nFaces )
         {
-          string s = string.Join( ".", g.Names );
+          foreach( Group g in result.Model.Groups )
+          {
+            string s = string.Join( ".", g.Names );
 
-          if( 0 < s.Length ) { s = "." + s; }
+            if( 0 < s.Length ) { s = "." + s; }
 
-          nFaces += NewDirectShape( vertices, g.Faces,
-            doc, graphicsStyleId, appGuid,
-            shapeName + s );
+            nFaces = NewDirectShape( vertices, g.Faces,
+              doc, graphicsStyleId, appGuid,
+              shapeName + s );
+
+            if( -1 == nFaces )
+            {
+              break;
+            }
+
+            nFacesTotal += nFaces;
+          }
         }
 
-        if( 0 == nFaces )
+        if( -1 == nFaces )
         {
-          message = "Zero faces";
+          message = "Invalid OBJ file. Error: face "
+            + "vertex index exceeds total vertex count.";
+        }
+        else if( 0 == nFacesTotal )
+        {
+          message = "Invalid OBJ file. Zero faces found.";
         }
         else
         {
