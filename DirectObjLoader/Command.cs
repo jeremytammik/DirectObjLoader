@@ -60,15 +60,15 @@ namespace DirectObjLoader
 
       foreach( Face f in faces )
       {
+        //Debug.Assert( 4 >= f.Indices.Count,
+        //  "I support only three or four vertices per face" );
+
         if( corners.Capacity < f.Indices.Count )
         {
           corners = new List<XYZ>( f.Indices.Count );
         }
 
         corners.Clear();
-
-        //Debug.Assert( 4 >= f.Indices.Count,
-        //  "I support only three or four vertices per face" );
 
         foreach( Index i in f.Indices )
         {

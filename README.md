@@ -21,6 +21,10 @@ OBJ files defining groups generate a separate DirectShape element for each one:
 
 ![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/cart_groups_3.png)
 
+After adding support for faces with more than four vertices, the sandal.obj test file is loaded successfully, albeit with some missing edges:
+
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/sandal_with_gaps.png)
+
 
 Wish List
 ---------
