@@ -54,12 +54,16 @@ namespace DirectObjLoader
       TessellatedShapeBuilder builder
         = new TessellatedShapeBuilder();
 
+      builder.LogString = shapeName;
+
       List<XYZ> corners = new List<XYZ>( 4 );
 
       builder.OpenConnectedFaceSet( false );
 
       foreach( Face f in faces )
       {
+        builder.LogInteger = nFaces;
+
         if( corners.Capacity < f.Indices.Count )
         {
           corners = new List<XYZ>( f.Indices.Count );
