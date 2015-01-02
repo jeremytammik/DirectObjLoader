@@ -41,7 +41,7 @@ namespace DirectObjLoader
     /// list of faces and return the number of faces
     /// processed.
     /// </summary>
-    static int NewDirectShape( 
+    static int NewDirectShape(
       List<XYZ> vertices,
       FaceCollection faces,
       Document doc,
@@ -51,7 +51,7 @@ namespace DirectObjLoader
     {
       int nFaces = 0;
 
-      TessellatedShapeBuilder builder 
+      TessellatedShapeBuilder builder
         = new TessellatedShapeBuilder();
 
       List<XYZ> corners = new List<XYZ>( 4 );
@@ -60,9 +60,6 @@ namespace DirectObjLoader
 
       foreach( Face f in faces )
       {
-        //Debug.Assert( 4 >= f.Indices.Count,
-        //  "I support only three or four vertices per face" );
-
         if( corners.Capacity < f.Indices.Count )
         {
           corners = new List<XYZ>( f.Indices.Count );
@@ -86,12 +83,13 @@ namespace DirectObjLoader
       builder.CloseConnectedFaceSet();
 
       // Refer to StlImport sample for more clever 
-      // handling of target and fallback.
+      // handling of target and fallback and the 
+      // possible combinations.
 
       TessellatedShapeBuilderResult r
         = builder.Build(
-          TessellatedShapeBuilderTarget.Mesh, // Solid
-          TessellatedShapeBuilderFallback.Salvage, // Abort
+          TessellatedShapeBuilderTarget.AnyGeometry, 
+          TessellatedShapeBuilderFallback.Mesh,
           graphicsStyleId );
 
       DirectShape ds = DirectShape.CreateElement(
@@ -139,7 +137,8 @@ namespace DirectObjLoader
 
       // Convert OBJ vertices to Revit XYZ.
       // OBJ assumes X to the right, Y up and Z out of the screen.
-      // Revit 3D view assumes X right, Y away from the screen and Z up.
+      // Revit 3D view assumes X right, Y away 
+      // from the screen and Z up.
 
       double scale = Config.InputScaleFactor;
 
@@ -150,12 +149,12 @@ namespace DirectObjLoader
 
       foreach( Vertex v in result.Model.Vertices )
       {
-        w = new XYZ( v.x * scale, 
+        w = new XYZ( v.x * scale,
           -v.z * scale, v.y * scale );
 
-        Debug.Print( "({0},{1},{2}) --> {3}", 
-          Util.RealString( v.x ), 
-          Util.RealString( v.y ), 
+        Debug.Print( "({0},{1},{2}) --> {3}",
+          Util.RealString( v.x ),
+          Util.RealString( v.y ),
           Util.RealString( v.z ),
           Util.PointString( w ) );
 
@@ -177,21 +176,24 @@ namespace DirectObjLoader
       UIDocument uidoc = uiapp.ActiveUIDocument;
       Document doc = uidoc.Document;
 
-      string appGuid 
+      string appGuid
         = uiapp.ActiveAddInId.GetGUID().ToString();
 
       string shapeName = Util.Capitalize(
         Path.GetFileNameWithoutExtension( _filename )
           .Replace( '_', ' ' ) );
 
-      // Find GraphicsStyle
+      // Retrieve "<Sketch>" graphics style, 
+      // if it exists.
 
       FilteredElementCollector collector
         = new FilteredElementCollector( doc )
           .OfClass( typeof( GraphicsStyle ) );
 
-      GraphicsStyle style = collector.Cast<GraphicsStyle>()
-        .FirstOrDefault<GraphicsStyle>( gs => gs.Name.Equals( "<Sketch>" ) );
+      GraphicsStyle style
+        = collector.Cast<GraphicsStyle>()
+          .FirstOrDefault<GraphicsStyle>( gs
+            => gs.Name.Equals( "<Sketch>" ) );
 
       ElementId graphicsStyleId = null;
 
@@ -210,8 +212,8 @@ namespace DirectObjLoader
 
         if( 0 < result.Model.UngroupedFaces.Count )
         {
-          nFaces += NewDirectShape( vertices, 
-            result.Model.UngroupedFaces, doc, 
+          nFaces += NewDirectShape( vertices,
+            result.Model.UngroupedFaces, doc,
             graphicsStyleId, appGuid, shapeName );
         }
 
@@ -222,8 +224,8 @@ namespace DirectObjLoader
           if( 0 < s.Length ) { s = "." + s; }
 
           nFaces += NewDirectShape( vertices, g.Faces,
-            doc, graphicsStyleId, appGuid, shapeName 
-            + s );
+            doc, graphicsStyleId, appGuid,
+            shapeName + s );
         }
 
         if( 0 == nFaces )

@@ -25,13 +25,17 @@ After adding support for faces with more than four vertices, the sandal.obj test
 
 ![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/sandal_with_gaps.png)
 
+Swithed from TessellatedShapeBuilder target Mesh to AnyGeometry generated more internal model structure from the sandal.obj test file, still with some missing faces:
+
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/sandal_with_gaps_anygeometry.png)
+
 
 Wish List
 ---------
 
 - Progress bar
 - Support for materials, minimally colour, preferably textures
-- Support for the options provided by [StlImport](https://github.com/jeremytammik/StlImport)
+- Support for the options provided by the [StlImport](https://github.com/jeremytammik/StlImport) StlImportProperties class
 
 
 Author
