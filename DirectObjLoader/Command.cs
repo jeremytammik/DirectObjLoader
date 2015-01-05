@@ -100,7 +100,7 @@ namespace DirectObjLoader
 
       TessellatedShapeBuilderResult r
         = builder.Build(
-          TessellatedShapeBuilderTarget.AnyGeometry, 
+          TessellatedShapeBuilderTarget.AnyGeometry,
           TessellatedShapeBuilderFallback.Mesh,
           graphicsStyleId );
 
@@ -135,53 +135,67 @@ namespace DirectObjLoader
       Config.DefaultFolderObj
         = Path.GetDirectoryName( _filename );
 
-      bool loadTextureImages = true;
+      FileLoadResult<Scene> obj_load_result = null;
+      List<XYZ> vertices = null;
 
-      var result = FileFormatObj.Load(
-        _filename, loadTextureImages );
-
-      foreach( var m in result.Messages )
+      try
       {
-        Debug.Print( "{0}: {1} line {2} in {3}",
-          m.MessageType, m.Details,
-          m.FileName, m.LineNumber );
+        bool loadTextureImages = true;
+
+        obj_load_result = FileFormatObj.Load(
+          _filename, loadTextureImages );
+
+        foreach( var m in obj_load_result.Messages )
+        {
+          Debug.Print( "{0}: {1} line {2} in {3}",
+            m.MessageType, m.Details,
+            m.FileName, m.LineNumber );
+        }
+
+        // Convert OBJ vertices to Revit XYZ.
+        // OBJ assumes X to the right, Y up and Z out of the screen.
+        // Revit 3D view assumes X right, Y away 
+        // from the screen and Z up.
+
+        double scale = Config.InputScaleFactor;
+
+        int n = obj_load_result.Model.Vertices.Count;
+
+        vertices = new List<XYZ>( n );
+        XYZ w;
+
+        foreach( Vertex v in obj_load_result.Model.Vertices )
+        {
+          w = new XYZ( v.x * scale,
+            -v.z * scale, v.y * scale );
+
+          Debug.Print( "({0},{1},{2}) --> {3}",
+            Util.RealString( v.x ),
+            Util.RealString( v.y ),
+            Util.RealString( v.z ),
+            Util.PointString( w ) );
+
+          vertices.Add( w );
+        }
+
+        foreach( Face f in obj_load_result.Model.UngroupedFaces )
+        {
+          n = f.Indices.Count;
+
+          Debug.Assert( 3 == n || 4 == n,
+            "expected triagles or quadrilaterals" );
+
+          Debug.Print( string.Join( ", ",
+            f.Indices.ToString() ) );
+        }
       }
-
-      // Convert OBJ vertices to Revit XYZ.
-      // OBJ assumes X to the right, Y up and Z out of the screen.
-      // Revit 3D view assumes X right, Y away 
-      // from the screen and Z up.
-
-      double scale = Config.InputScaleFactor;
-
-      int n = result.Model.Vertices.Count;
-
-      List<XYZ> vertices = new List<XYZ>( n );
-      XYZ w;
-
-      foreach( Vertex v in result.Model.Vertices )
+      catch( System.Exception ex )
       {
-        w = new XYZ( v.x * scale,
-          -v.z * scale, v.y * scale );
+        message = string.Format(
+          "Exception reading '{0}':\r\n{1}",
+          _filename, ex.Message );
 
-        Debug.Print( "({0},{1},{2}) --> {3}",
-          Util.RealString( v.x ),
-          Util.RealString( v.y ),
-          Util.RealString( v.z ),
-          Util.PointString( w ) );
-
-        vertices.Add( w );
-      }
-
-      foreach( Face f in result.Model.UngroupedFaces )
-      {
-        n = f.Indices.Count;
-
-        Debug.Assert( 3 == n || 4 == n,
-          "expected triagles or quadrilaterals" );
-
-        Debug.Print( string.Join( ", ",
-          f.Indices.ToString() ) );
+        return Result.Failed;
       }
 
       UIApplication uiapp = commandData.Application;
@@ -216,56 +230,67 @@ namespace DirectObjLoader
 
       Result rc = Result.Failed;
 
-      using( Transaction tx = new Transaction( doc ) )
+      try
       {
-        tx.Start( "Create DirectShape from OBJ" );
-
-        int nFaces = 0;
-        int nFacesTotal = 0;
-
-        if( 0 < result.Model.UngroupedFaces.Count )
+        using( Transaction tx = new Transaction( doc ) )
         {
-          nFaces = NewDirectShape( vertices,
-            result.Model.UngroupedFaces, doc,
-            graphicsStyleId, appGuid, shapeName );
-        }
+          tx.Start( "Create DirectShape from OBJ" );
 
-        if( -1 < nFaces )
-        {
-          foreach( Group g in result.Model.Groups )
+          int nFaces = 0;
+          int nFacesTotal = 0;
+
+          if( 0 < obj_load_result.Model.UngroupedFaces.Count )
           {
-            string s = string.Join( ".", g.Names );
+            nFaces = NewDirectShape( vertices,
+              obj_load_result.Model.UngroupedFaces, doc,
+              graphicsStyleId, appGuid, shapeName );
+          }
 
-            if( 0 < s.Length ) { s = "." + s; }
-
-            nFaces = NewDirectShape( vertices, g.Faces,
-              doc, graphicsStyleId, appGuid,
-              shapeName + s );
-
-            if( -1 == nFaces )
+          if( -1 < nFaces )
+          {
+            foreach( Group g in obj_load_result.Model.Groups )
             {
-              break;
-            }
+              string s = string.Join( ".", g.Names );
 
-            nFacesTotal += nFaces;
+              if( 0 < s.Length ) { s = "." + s; }
+
+              nFaces = NewDirectShape( vertices, g.Faces,
+                doc, graphicsStyleId, appGuid,
+                shapeName + s );
+
+              if( -1 == nFaces )
+              {
+                break;
+              }
+
+              nFacesTotal += nFaces;
+            }
+          }
+
+          if( -1 == nFaces )
+          {
+            message = "Invalid OBJ file. Error: face "
+              + "vertex index exceeds total vertex count.";
+          }
+          else if( 0 == nFacesTotal )
+          {
+            message = "Invalid OBJ file. Zero faces found.";
+          }
+          else
+          {
+            tx.Commit();
+
+            rc = Result.Succeeded;
           }
         }
+      }
+      catch( System.Exception ex )
+      {
+        message = string.Format(
+          "Exception generating DirectShape '{0}':\r\n{1}",
+          shapeName, ex.Message );
 
-        if( -1 == nFaces )
-        {
-          message = "Invalid OBJ file. Error: face "
-            + "vertex index exceeds total vertex count.";
-        }
-        else if( 0 == nFacesTotal )
-        {
-          message = "Invalid OBJ file. Zero faces found.";
-        }
-        else
-        {
-          tx.Commit();
-
-          rc = Result.Succeeded;
-        }
+        return Result.Failed;
       }
       return rc;
     }
