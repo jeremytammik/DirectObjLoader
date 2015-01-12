@@ -50,7 +50,8 @@ using System.Runtime.InteropServices;
 // 2015-01-02 2015.0.0.11 set TessellatedShapeBuilder LogString and LogInteger properties
 // 2015-01-02 2015.0.0.12 abort and display error message on invalid OBJ file due to face vertex index exceeding total vertex count
 // 2015-01-05 2015.0.0.13 added two exception handlers for loading OBJ file and generating DirectShape
+// 2015-01-12 2015.0.0.14 removed external command from add-in manifest, leaving only the external application
 //
 
-[assembly: AssemblyVersion( "2015.0.0.13" )]
-[assembly: AssemblyFileVersion( "2015.0.0.13" )]
+[assembly: AssemblyVersion( "2015.0.0.14" )]
+[assembly: AssemblyFileVersion( "2015.0.0.14" )]

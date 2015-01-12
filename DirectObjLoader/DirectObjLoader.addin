@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
-  <AddIn Type="Command">
-    <Text>DirectShape OBJ Loader</Text>
-    <Description>Load a WaveFront OBJ file into a DirectShape element</Description>
-    <Assembly>DirectObjLoader.dll</Assembly>
-    <FullClassName>DirectObjLoader.Command</FullClassName>
-    <ClientId>c9198a17-026e-4d80-9acb-2fd3f28f6bde</ClientId>
-    <VendorId>TBC_</VendorId>
-    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
-  </AddIn>
   <AddIn Type="Application">
     <Name>DirectObjLoader</Name>
     <Assembly>DirectObjLoader.dll</Assembly>
