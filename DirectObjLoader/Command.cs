@@ -236,12 +236,12 @@ namespace DirectObjLoader
         {
           tx.Start( "Create DirectShape from OBJ" );
 
-          int nFaces = 0;
+          int nFaces = 0; // set to -1 on fatal error
           int nFacesTotal = 0;
 
           if( 0 < obj_load_result.Model.UngroupedFaces.Count )
           {
-            nFaces = NewDirectShape( vertices,
+            nFacesTotal = nFaces = NewDirectShape( vertices,
               obj_load_result.Model.UngroupedFaces, doc,
               graphicsStyleId, appGuid, shapeName );
           }
