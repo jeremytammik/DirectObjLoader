@@ -75,6 +75,10 @@
     <None Include="DirectObjLoader.addin" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImgDirectObjLoader16.png" />
+    <EmbeddedResource Include="ImgDirectObjLoader32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterClean">
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2015\DirectObjLoader.addin" />
