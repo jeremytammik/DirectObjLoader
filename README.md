@@ -3,7 +3,7 @@ DirectObjLoader
 
 Revit add-in to load a WaveFront OBJ model and generate a DirectShape element from it.
 
-![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/DirectObjLoader_app.png)
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/DirectObjLoader_app_2.png)
 
 Sample fire hydrant OBJ file:
 
