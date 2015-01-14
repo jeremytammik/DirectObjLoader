@@ -1,49 +1,83 @@
 #region Namespaces
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Reflection;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using System.Reflection;
 #endregion
 
 namespace DirectObjLoader
 {
   class App : IExternalApplication
   {
-    /// <summary>
-    /// Add buttons for our command
-    /// to the ribbon panel.
-    /// </summary>
-    void PopulatePanel( RibbonPanel p )
-    {
-      string path = Assembly.GetExecutingAssembly()
-        .Location;
+    #region Load bitmap from embedded resources
+    static string _namespace_prefix
+      = typeof( App ).Namespace + ".";
 
-      RibbonItemData i1 = new PushButtonData(
+    /// <summary>
+    /// Load a new icon bitmap from embedded resources.
+    /// For the BitmapImage, make sure you reference 
+    /// WindowsBase and PresentationCore, and import 
+    /// the System.Windows.Media.Imaging namespace. 
+    /// </summary>
+    BitmapImage NewBitmapImage(
+      Assembly a,
+      string imageName )
+    {
+      Stream s = a.GetManifestResourceStream(
+         _namespace_prefix + imageName );
+
+      BitmapImage img = new BitmapImage();
+
+      img.BeginInit();
+      img.StreamSource = s;
+      img.EndInit();
+
+      return img;
+    }
+    #endregion // Load bitmap from embedded resources
+
+    void CreateRibbonPanel( 
+      UIControlledApplication a )
+    {
+      Assembly exe = Assembly.GetExecutingAssembly();
+      string path = exe.Location;
+
+      string className = GetType().FullName.Replace(
+        "App", "Command" );
+
+      RibbonPanel p = a.CreateRibbonPanel(
+        "DirectShape OBJ Loader" );
+
+      PushButtonData d = new PushButtonData(
           "DirectObjLoader_Command",
           "DirectShape\r\nOBJ Loader",
           path, "DirectObjLoader.Command" );
 
-      i1.ToolTip = "Load a WaveFront OBJ file into a "
-        + "DirectShape element";
+      d.ToolTip = "Load a WaveFront OBJ model mesh "
+        + "into a DirectShape Revit element";
 
-      //p.AddStackedItems( i1, i2, i3 );
+      d.Image = NewBitmapImage( exe, "ImgDirectObjLoader16.png" );
+      d.LargeImage = NewBitmapImage( exe, "ImgDirectObjLoader32.png" );
+      d.LongDescription = d.ToolTip;
 
-      p.AddItem( i1 );
+      p.AddItem( d );
     }
 
-    public Result OnStartup( UIControlledApplication a )
+    public Result OnStartup( 
+      UIControlledApplication a )
     {
-      PopulatePanel(
-        a.CreateRibbonPanel(
-          "DirectShape OBJ Loader" ) );
+      CreateRibbonPanel( a );
 
       return Result.Succeeded;
     }
 
-    public Result OnShutdown( UIControlledApplication a )
+    public Result OnShutdown( 
+      UIControlledApplication a )
     {
       return Result.Succeeded;
     }
