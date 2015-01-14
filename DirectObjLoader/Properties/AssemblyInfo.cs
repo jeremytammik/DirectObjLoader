@@ -52,7 +52,7 @@ using System.Runtime.InteropServices;
 // 2015-01-05 2015.0.0.13 added two exception handlers for loading OBJ file and generating DirectShape
 // 2015-01-12 2015.0.0.14 removed external command from add-in manifest, leaving only the external application
 // 2015-01-12 2015.0.0.15 fixed a logical error handling nFaces and nFacesTotal count
+// 2015-01-15 2015.0.0.16 display command button icon stored in embedded resources
 //
-
-[assembly: AssemblyVersion( "2015.0.0.15" )]
-[assembly: AssemblyFileVersion( "2015.0.0.15" )]
+[assembly: AssemblyVersion( "2015.0.0.16" )]
+[assembly: AssemblyFileVersion( "2015.0.0.16" )]
