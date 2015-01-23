@@ -9,6 +9,15 @@ namespace DirectObjLoader
 {
   class Util
   {
+    /// <summary>
+    /// Return an English plural suffix 's' or
+    /// nothing for the given number of items.
+    /// </summary>
+    public static string PluralSuffix( int n )
+    {
+      return 1 == n ? "" : "s";
+    }
+
     // JavaScript sample implementations:
     // capitalize:function(){return this.replace(/\b[a-z]/g,function(match){return match.toUpperCase();});}
     // capitalize: function() { return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase(); }

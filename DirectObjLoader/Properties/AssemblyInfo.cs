@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Autodesk Inc." )]
 [assembly: AssemblyProduct( "DirectObjLoader" )]
-[assembly: AssemblyCopyright( "Copyright 2014 © Eric Boehlke and Jeremy Tammik Autodesk Inc." )]
+[assembly: AssemblyCopyright( "Copyright 2014-2015 © Eric Boehlke and Jeremy Tammik Autodesk Inc." )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -53,6 +53,7 @@ using System.Runtime.InteropServices;
 // 2015-01-12 2015.0.0.14 removed external command from add-in manifest, leaving only the external application
 // 2015-01-12 2015.0.0.15 fixed a logical error handling nFaces and nFacesTotal count
 // 2015-01-15 2015.0.0.16 display command button icon stored in embedded resources
+// 2015-01-23 2015.0.0.17 wrapped call to AddFace in an own exception handler and added a debug log reporting count of faces added and failed
 //
-[assembly: AssemblyVersion( "2015.0.0.16" )]
-[assembly: AssemblyFileVersion( "2015.0.0.16" )]
+[assembly: AssemblyVersion( "2015.0.0.17" )]
+[assembly: AssemblyFileVersion( "2015.0.0.17" )]

@@ -53,6 +53,7 @@ namespace DirectObjLoader
       string shapeName )
     {
       int nFaces = 0;
+      int nFacesFailed = 0;
 
       TessellatedShapeBuilder builder
         = new TessellatedShapeBuilder();
@@ -87,10 +88,27 @@ namespace DirectObjLoader
           corners.Add( vertices[i.vertex] );
         }
 
-        builder.AddFace( new TessellatedFace( corners,
-          ElementId.InvalidElementId ) );
 
-        ++nFaces;
+        try
+        {
+          builder.AddFace( new TessellatedFace( corners,
+            ElementId.InvalidElementId ) );
+
+          ++nFaces;
+        }
+        catch
+        {
+          // Remember something went wrong here.
+
+          ++nFacesFailed;
+
+          Debug.Print( 
+            "Failed to add face with {0} corners: {1}",
+            corners.Count, 
+            string.Join( ", ", 
+              corners.Select<XYZ, string>( 
+                p => Util.PointString( p ) ) ) );
+        }
       }
       builder.CloseConnectedFaceSet();
 
@@ -109,6 +127,11 @@ namespace DirectObjLoader
 
       ds.SetShape( r.GetGeometricalObjects() );
       ds.Name = shapeName;
+
+      Debug.Print(
+        "Shape '{0}': added {1} face{2}, {3} face{4} failed.",
+        shapeName, nFaces, Util.PluralSuffix( nFaces ),
+        nFacesFailed, Util.PluralSuffix( nFacesFailed ) );
 
       return nFaces;
     }
