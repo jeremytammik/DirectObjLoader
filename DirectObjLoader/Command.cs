@@ -96,15 +96,16 @@ namespace DirectObjLoader
 
           ++nFaces;
         }
-        catch
+        catch( Autodesk.Revit.Exceptions.ArgumentException ex )
         {
           // Remember something went wrong here.
 
           ++nFacesFailed;
 
           Debug.Print( 
-            "Failed to add face with {0} corners: {1}",
-            corners.Count, 
+            "Revit API argument exception {0}\r\n"
+            + "Failed to add face with {1} corners: {2}",
+            ex.Message, corners.Count, 
             string.Join( ", ", 
               corners.Select<XYZ, string>( 
                 p => Util.PointString( p ) ) ) );
@@ -206,10 +207,11 @@ namespace DirectObjLoader
           n = f.Indices.Count;
 
           Debug.Assert( 3 == n || 4 == n,
-            "expected triagles or quadrilaterals" );
+            "expected triangles or quadrilaterals" );
 
           Debug.Print( string.Join( ", ",
-            f.Indices.ToString() ) );
+            f.Indices.Select<Index,string>( 
+              i => i.vertex.ToString() ) ) );
         }
       }
       catch( System.Exception ex )

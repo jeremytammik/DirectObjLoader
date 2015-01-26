@@ -29,6 +29,10 @@ Switched from TessellatedShapeBuilder target Mesh to AnyGeometry generated more 
 
 ![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/sandal_with_gaps_anygeometry.png)
 
+Release 2015.0.0.17 improved error handling on degenerate faces:
+
+![Image](https://github.com/jeremytammik/DirectObjLoader/blob/master/img/high_ball_glass.png)
+
 
 Wish List
 ---------
