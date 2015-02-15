@@ -336,8 +336,11 @@ namespace DirectObjLoader
       catch( System.Exception ex )
       {
         message = string.Format(
-          "Exception generating DirectShape '{0}':\r\n{1}",
-          shapeName, ex.Message );
+          "Exception generating DirectShape '{0}':",
+          "\r\n{1}\r\n{2}",
+          shapeName, 
+          ex.GetType().FullName, 
+          ex.Message );
 
         return Result.Failed;
       }
