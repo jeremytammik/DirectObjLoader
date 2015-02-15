@@ -13,8 +13,9 @@ namespace DirectObjLoader
   {
     const string _defaultFolderObj = "defaultFolderObj";
     const string _inputScaleFactor = "inputScaleFactor";
-    const string _tryToCreateSolids = "tryToCreateSolids";
+    const string _maxFileSize = "maxFileSize";
     const string _maxNumberOfVertices = "maxNumberOfVertices";
+    const string _tryToCreateSolids = "tryToCreateSolids";
 
     static Configuration _config = null;
 
@@ -40,15 +41,20 @@ namespace DirectObjLoader
         config.AppSettings.Settings.Add(
           _inputScaleFactor, "1.0" );
       }
-      if( !keys.Contains<string>( _tryToCreateSolids ) )
+      if( !keys.Contains<string>( _maxFileSize ) )
       {
         config.AppSettings.Settings.Add(
-          _tryToCreateSolids, "true" );
+          _maxFileSize, "50000000" );
       }
       if( !keys.Contains<string>( _maxNumberOfVertices ) )
       {
         config.AppSettings.Settings.Add(
           _maxNumberOfVertices, "100000" );
+      }
+      if( !keys.Contains<string>( _tryToCreateSolids ) )
+      {
+        config.AppSettings.Settings.Add(
+          _tryToCreateSolids, "true" );
       }
       return config;
     }
@@ -108,6 +114,58 @@ namespace DirectObjLoader
       }
     }
 
+    public static int MaxFileSize
+    {
+      get
+      {
+        int n;
+        try
+        {
+          n = int.Parse( Settings[_maxFileSize].Value );
+        }
+        catch( System.FormatException )
+        {
+          n = 100000;
+        }
+        return n;
+      }
+      set
+      {
+        int oldVal = MaxFileSize;
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_maxFileSize].Value = value.ToString();
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
+      }
+    }
+
+    public static int MaxNumberOfVertices
+    {
+      get
+      {
+        int n;
+        try
+        {
+          n = int.Parse( Settings[_maxNumberOfVertices].Value );
+        }
+        catch( System.FormatException )
+        {
+          n = 100000;
+        }
+        return n;
+      }
+      set
+      {
+        int oldVal = MaxNumberOfVertices;
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_maxNumberOfVertices].Value = value.ToString();
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
+      }
+    }
+
     static bool TryToCreateSolids
     {
       get
@@ -138,32 +196,5 @@ namespace DirectObjLoader
         }
       }
     }
-
-    public static int MaxNumberOfVertices
-    {
-      get
-      {
-        int n;
-        try
-        {
-          n = int.Parse( Settings[_maxNumberOfVertices].Value );
-        }
-        catch( System.FormatException )
-        {
-          n = 100000;
-        }
-        return n;
-      }
-      set
-      {
-        int oldVal = MaxNumberOfVertices;
-        if( !value.Equals( oldVal ) )
-        {
-          Settings[_inputScaleFactor].Value = value.ToString();
-          _config.Save( ConfigurationSaveMode.Modified );
-        }
-      }
-    }
-
   }
 }

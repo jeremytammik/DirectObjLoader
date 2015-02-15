@@ -166,6 +166,34 @@ namespace DirectObjLoader
       Config.DefaultFolderObj
         = Path.GetDirectoryName( _filename );
 
+      long fileSize = 0L;
+
+      using( FileStream file = File.Open(
+        _filename, FileMode.Open ) )
+      {
+        fileSize = file.Seek( 0L, SeekOrigin.End );
+        file.Close();
+      }
+
+      if( fileSize > Config.MaxFileSize )
+      {
+        string msg = string.Format( "Excuse me, but "
+          + "you are loading a file that is {0} bytes "
+          + "in size. We suggest ensuring that the "
+          + "file size is no larger than {1} bytes, "
+          + "since Revit will refuse to handle meshes "
+          + "exceeding a certain size anyway. "
+          + "Please refer to the troubleshooting page "
+          + "at\r\n\r\n{2}\r\n\r\n for "
+          + "suggestions on how to reduce the mesh size.",
+          fileSize, Config.MaxFileSize, 
+          TroubleshootingUrl );
+
+        TaskDialog.Show( "Direct OBJ Loader", msg );
+
+        return Result.Failed;
+      }
+
       FileLoadResult<Scene> obj_load_result = null;
       List<XYZ> vertices = null;
 
@@ -241,8 +269,7 @@ namespace DirectObjLoader
           + "will refuse to handle such a large mesh anyway. "
           + "Please refer to the troubleshooting page at {2} "
           + "for suggestions on how to reduce the mesh size.",
-          vertices.Count,
-          Config.MaxNumberOfVertices,
+          vertices.Count, Config.MaxNumberOfVertices,
           TroubleshootingUrl );
 
         TaskDialog.Show( "Direct OBJ Loader", msg );
