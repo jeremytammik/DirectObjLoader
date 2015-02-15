@@ -54,6 +54,7 @@ using System.Runtime.InteropServices;
 // 2015-01-12 2015.0.0.15 fixed a logical error handling nFaces and nFacesTotal count
 // 2015-01-15 2015.0.0.16 display command button icon stored in embedded resources
 // 2015-01-23 2015.0.0.17 wrapped call to AddFace in an own exception handler and added a debug log reporting count of faces added and failed
+// 2015-02-15 2015.0.0.18 implemented Config.MaxNumberOfVertices and graceful exit on too many mesh vertices
 //
-[assembly: AssemblyVersion( "2015.0.0.17" )]
-[assembly: AssemblyFileVersion( "2015.0.0.17" )]
+[assembly: AssemblyVersion( "2015.0.0.18" )]
+[assembly: AssemblyFileVersion( "2015.0.0.18" )]

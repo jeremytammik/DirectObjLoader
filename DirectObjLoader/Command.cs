@@ -9,7 +9,7 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Windows;
+//using Autodesk.Windows;
 using FileFormatWavefront;
 using FileFormatWavefront.Model;
 using Face = FileFormatWavefront.Model.Face;
@@ -35,6 +35,13 @@ namespace DirectObjLoader
     /// </summary>
     static ElementId _categoryId = new ElementId(
       BuiltInCategory.OST_GenericModel );
+
+    /// <summary>
+    /// Troubleshooting web page URL for use in 
+    /// warning message on too many mesh vertices.
+    /// </summary>
+    const string _troubleshooting_url
+      = "http://truevis.com/troubleshoot-revit-mesh-import";
 
     /// <summary>
     /// Create a new DirectShape element from given
@@ -146,8 +153,8 @@ namespace DirectObjLoader
       ElementSet elements )
     {
       IWin32Window revit_window
-        = new JtWindowHandle(
-          ComponentManager.ApplicationWindow );
+        = new JtWindowHandle( Autodesk.Windows
+          .ComponentManager.ApplicationWindow );
 
       if( !Util.FileSelectObj(
         Config.DefaultFolderObj,
@@ -219,6 +226,23 @@ namespace DirectObjLoader
         message = string.Format(
           "Exception reading '{0}':\r\n{1}",
           _filename, ex.Message );
+
+        return Result.Failed;
+      }
+
+      if( vertices.Count > Config.MaxNumberOfVertices )
+      {
+        string msg = string.Format( "Excuse me, but "
+          + "you are loading a mesh defining {0} vertices. "
+          + "We suggest using no more than {1}, since Revit "
+          + "will refuse to handle such a large mesh anyway. "
+          + "Please refer to the troubleshooting page at {3} "
+          + "for suggestions on how to reduce the mesh size.",
+          vertices.Count,
+          Config.MaxNumberOfVertices,
+          _troubleshooting_url );
+
+        TaskDialog.Show( "Direct OBJ Loader", msg );
 
         return Result.Failed;
       }

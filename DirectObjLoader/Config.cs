@@ -14,6 +14,7 @@ namespace DirectObjLoader
     const string _defaultFolderObj = "defaultFolderObj";
     const string _inputScaleFactor = "inputScaleFactor";
     const string _tryToCreateSolids = "tryToCreateSolids";
+    const string _maxNumberOfVertices = "maxNumberOfVertices";
 
     static Configuration _config = null;
 
@@ -43,6 +44,11 @@ namespace DirectObjLoader
       {
         config.AppSettings.Settings.Add(
           _tryToCreateSolids, "true" );
+      }
+      if( !keys.Contains<string>( _maxNumberOfVertices ) )
+      {
+        config.AppSettings.Settings.Add(
+          _maxNumberOfVertices, "100000" );
       }
       return config;
     }
@@ -93,7 +99,7 @@ namespace DirectObjLoader
       }
       set
       {
-        string oldVal = DefaultFolderObj;
+        double oldVal = InputScaleFactor;
         if( !value.Equals( oldVal ) )
         {
           Settings[_inputScaleFactor].Value = value.ToString();
@@ -132,5 +138,32 @@ namespace DirectObjLoader
         }
       }
     }
+
+    public static int MaxNumberOfVertices
+    {
+      get
+      {
+        int n;
+        try
+        {
+          n = int.Parse( Settings[_maxNumberOfVertices].Value );
+        }
+        catch( System.FormatException )
+        {
+          n = 100000;
+        }
+        return n;
+      }
+      set
+      {
+        int oldVal = MaxNumberOfVertices;
+        if( !value.Equals( oldVal ) )
+        {
+          Settings[_inputScaleFactor].Value = value.ToString();
+          _config.Save( ConfigurationSaveMode.Modified );
+        }
+      }
+    }
+
   }
 }
