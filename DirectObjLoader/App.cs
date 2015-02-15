@@ -14,6 +14,11 @@ namespace DirectObjLoader
 {
   class App : IExternalApplication
   {
+    /// <summary>
+    /// Caption used in messages etc.
+    /// </summary>
+    public const string Caption = "Direct OBJ Loader";
+
     #region Load bitmap from embedded resources
     static string _namespace_prefix
       = typeof( App ).Namespace + ".";

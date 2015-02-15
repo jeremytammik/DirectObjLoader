@@ -9,7 +9,6 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-//using Autodesk.Windows;
 using FileFormatWavefront;
 using FileFormatWavefront.Model;
 using Face = FileFormatWavefront.Model.Face;
@@ -85,16 +84,15 @@ namespace DirectObjLoader
         foreach( Index i in f.Indices )
         {
           Debug.Assert( vertices.Count > i.vertex,
-            "how can the face vertex index be larger than the total number of vertices?" );
+            "how can the face vertex index be larger "
+            + "than the total number of vertices?" );
 
           if( i.vertex >= vertices.Count )
           {
             return -1;
           }
-
           corners.Add( vertices[i.vertex] );
         }
-
 
         try
         {
@@ -166,30 +164,24 @@ namespace DirectObjLoader
       Config.DefaultFolderObj
         = Path.GetDirectoryName( _filename );
 
-      long fileSize = 0L;
-
-      using( FileStream file = File.Open(
-        _filename, FileMode.Open ) )
-      {
-        fileSize = file.Seek( 0L, SeekOrigin.End );
-        file.Close();
-      }
+      long fileSize = Util.GetFileSize( _filename );
 
       if( fileSize > Config.MaxFileSize )
       {
         string msg = string.Format( "Excuse me, but "
-          + "you are loading a file that is {0} bytes "
-          + "in size. We suggest ensuring that the "
-          + "file size is no larger than {1} bytes, "
-          + "since Revit will refuse to handle meshes "
-          + "exceeding a certain size anyway. "
+          + "you are attempting to load a file that is "
+          + "{0} bytes in size. We suggest ensuring "
+          + "that the file size is no larger than {1} "
+          + "bytes, since Revit will refuse to handle "
+          + "meshes exceeding a certain size anyway. "
           + "Please refer to the troubleshooting page "
-          + "at\r\n\r\n{2}\r\n\r\n for "
-          + "suggestions on how to reduce the mesh size.",
+          + "at\r\n\r\n{2}\r\n\r\n"
+          + "for suggestions on how to optimise the "
+          + "mesh and thus reduce file size.",
           fileSize, Config.MaxFileSize, 
           TroubleshootingUrl );
 
-        TaskDialog.Show( "Direct OBJ Loader", msg );
+        TaskDialog.Show( App.Caption, msg );
 
         return Result.Failed;
       }
@@ -264,15 +256,18 @@ namespace DirectObjLoader
       if( vertices.Count > Config.MaxNumberOfVertices )
       {
         string msg = string.Format( "Excuse me, but "
-          + "you are loading a mesh defining {0} vertices. "
-          + "We suggest using no more than {1}, since Revit "
-          + "will refuse to handle such a large mesh anyway. "
-          + "Please refer to the troubleshooting page at {2} "
-          + "for suggestions on how to reduce the mesh size.",
+          + "you are attempting to load a mesh defining "
+          + "{0} vertices. We suggest using no more than "
+          + "{1}, since Revit will refuse to handle such "
+          + "a large mesh anyway. "
+          + "Please refer to the troubleshooting page at "
+          + "\r\n\r\n{2}\r\n\r\n"
+          + "for suggestions on how to optimise the mesh "
+          + "and thus reduce its size.",
           vertices.Count, Config.MaxNumberOfVertices,
           TroubleshootingUrl );
 
-        TaskDialog.Show( "Direct OBJ Loader", msg );
+        TaskDialog.Show( App.Caption, msg );
 
         return Result.Failed;
       }

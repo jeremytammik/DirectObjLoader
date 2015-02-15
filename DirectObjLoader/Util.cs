@@ -1,5 +1,6 @@
 ﻿#region Namespaces
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
@@ -136,6 +137,22 @@ namespace DirectObjLoader
         "Select WaveFront OBJ file or Cancel to Exit",
         "WaveFront OBJ Files (*.obj)|*.obj",
         ref filename );
+    }
+
+    /// <summary>
+    /// Return the size in bytes of the given file.
+    /// </summary>
+    static public long GetFileSize( string filename )
+    {
+      long fileSize = 0L;
+
+      using( FileStream file = File.Open(
+        filename, FileMode.Open ) )
+      {
+        fileSize = file.Seek( 0L, SeekOrigin.End );
+        file.Close();
+      }
+      return fileSize;
     }
   }
 }
