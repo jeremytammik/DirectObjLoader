@@ -224,8 +224,11 @@ namespace DirectObjLoader
       catch( System.Exception ex )
       {
         message = string.Format(
-          "Exception reading '{0}':\r\n{1}",
-          _filename, ex.Message );
+          "Exception reading '{0}':"
+          + "\r\n{1}:\r\n{2}",
+          _filename,
+          ex.GetType().FullName, 
+          ex.Message );
 
         return Result.Failed;
       }
@@ -236,7 +239,7 @@ namespace DirectObjLoader
           + "you are loading a mesh defining {0} vertices. "
           + "We suggest using no more than {1}, since Revit "
           + "will refuse to handle such a large mesh anyway. "
-          + "Please refer to the troubleshooting page at {3} "
+          + "Please refer to the troubleshooting page at {2} "
           + "for suggestions on how to reduce the mesh size.",
           vertices.Count,
           Config.MaxNumberOfVertices,
@@ -336,8 +339,8 @@ namespace DirectObjLoader
       catch( System.Exception ex )
       {
         message = string.Format(
-          "Exception generating DirectShape '{0}':",
-          "\r\n{1}\r\n{2}",
+          "Exception generating DirectShape '{0}':"
+          + "\r\n{1}:\r\n{2}",
           shapeName, 
           ex.GetType().FullName, 
           ex.Message );
