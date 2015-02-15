@@ -61,9 +61,17 @@ namespace DirectObjLoader
       d.ToolTip = "Load a WaveFront OBJ model mesh "
         + "into a DirectShape Revit element";
 
-      d.Image = NewBitmapImage( exe, "ImgDirectObjLoader16.png" );
-      d.LargeImage = NewBitmapImage( exe, "ImgDirectObjLoader32.png" );
+      d.Image = NewBitmapImage( exe, 
+        "ImgDirectObjLoader16.png" );
+
+      d.LargeImage = NewBitmapImage( exe, 
+        "ImgDirectObjLoader32.png" );
+
       d.LongDescription = d.ToolTip;
+
+      d.SetContextualHelp( new ContextualHelp( 
+        ContextualHelpType.Url, 
+        Command.TroubleshootingUrl ) );
 
       p.AddItem( d );
     }

@@ -40,7 +40,7 @@ namespace DirectObjLoader
     /// Troubleshooting web page URL for use in 
     /// warning message on too many mesh vertices.
     /// </summary>
-    const string _troubleshooting_url
+    public const string TroubleshootingUrl
       = "http://truevis.com/troubleshoot-revit-mesh-import";
 
     /// <summary>
@@ -240,7 +240,7 @@ namespace DirectObjLoader
           + "for suggestions on how to reduce the mesh size.",
           vertices.Count,
           Config.MaxNumberOfVertices,
-          _troubleshooting_url );
+          TroubleshootingUrl );
 
         TaskDialog.Show( "Direct OBJ Loader", msg );
 
