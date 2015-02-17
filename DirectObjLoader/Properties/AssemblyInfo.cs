@@ -57,6 +57,7 @@ using System.Runtime.InteropServices;
 // 2015-02-15 2015.0.0.18 implemented Config.MaxNumberOfVertices and graceful exit on too many mesh vertices
 // 2015-02-15 2015.0.0.19 implemented contextual help for external command push button in ribbon panel
 // 2015-02-15 2015.0.0.20 implemented Config.MaxFileSize check for huge file sizes and abort before trying to load them
+// 2015-02-17 2015.0.0.21 published blog post
 //
-[assembly: AssemblyVersion( "2015.0.0.20" )]
-[assembly: AssemblyFileVersion( "2015.0.0.20" )]
+[assembly: AssemblyVersion( "2015.0.0.21" )]
+[assembly: AssemblyFileVersion( "2015.0.0.21" )]
