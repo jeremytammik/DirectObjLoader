@@ -48,6 +48,14 @@ Author
 Jeremy Tammik, [The Building Coder](http://thebuildingcoder.typepad.com), Autodesk Inc.
 
 
+Dependencies
+------------
+
+DirectObjLoader uses the
+[FileFormatWavefront](http://nugetmusthaves.com/Package/FileFormatWavefront) NuGet package based on Dave Kerr's
+[file-format-wavefront](https://github.com/dwmkerr/file-format-wavefront) GitHub library.
+
+
 License
 -------
 
