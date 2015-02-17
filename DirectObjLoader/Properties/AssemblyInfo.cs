@@ -45,7 +45,7 @@ using System.Runtime.InteropServices;
 // 2014-12-11 2015.0.0.6 name DirectShape element same as input file
 // 2014-12-12 2015.0.0.7 create separate DirectShape element for each OBJ group, add appGuid and name shapes better, result directobjloader_shopping_cart_groups_3.png
 // 2014-12-12 2015.0.0.8 capitalise and replace underscore by space in DirectShape element name
-// 2015-01-02 2015.0.0.9 added support for faces with more than four vertices, enabling succesful load of sandal.obj
+// 2015-01-02 2015.0.0.9 added support for faces with more than four vertices, enabling successful load of sandal.obj
 // 2015-01-02 2015.0.0.10 switched TessellatedShapeBuilder target from Mesh to AnyGeometry
 // 2015-01-02 2015.0.0.11 set TessellatedShapeBuilder LogString and LogInteger properties
 // 2015-01-02 2015.0.0.12 abort and display error message on invalid OBJ file due to face vertex index exceeding total vertex count

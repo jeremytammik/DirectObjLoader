@@ -107,12 +107,12 @@ namespace DirectObjLoader
 
           ++nFacesFailed;
 
-          Debug.Print( 
+          Debug.Print(
             "Revit API argument exception {0}\r\n"
             + "Failed to add face with {1} corners: {2}",
-            ex.Message, corners.Count, 
-            string.Join( ", ", 
-              corners.Select<XYZ, string>( 
+            ex.Message, corners.Count,
+            string.Join( ", ",
+              corners.Select<XYZ, string>(
                 p => Util.PointString( p ) ) ) );
         }
       }
@@ -178,7 +178,7 @@ namespace DirectObjLoader
           + "at\r\n\r\n{2}\r\n\r\n"
           + "for suggestions on how to optimise the "
           + "mesh and thus reduce file size.",
-          fileSize, Config.MaxFileSize, 
+          fileSize, Config.MaxFileSize,
           TroubleshootingUrl );
 
         TaskDialog.Show( App.Caption, msg );
@@ -237,7 +237,7 @@ namespace DirectObjLoader
             "expected triangles or quadrilaterals" );
 
           Debug.Print( string.Join( ", ",
-            f.Indices.Select<Index,string>( 
+            f.Indices.Select<Index, string>(
               i => i.vertex.ToString() ) ) );
         }
       }
@@ -247,7 +247,7 @@ namespace DirectObjLoader
           "Exception reading '{0}':"
           + "\r\n{1}:\r\n{2}",
           _filename,
-          ex.GetType().FullName, 
+          ex.GetType().FullName,
           ex.Message );
 
         return Result.Failed;
@@ -363,8 +363,8 @@ namespace DirectObjLoader
         message = string.Format(
           "Exception generating DirectShape '{0}':"
           + "\r\n{1}:\r\n{2}",
-          shapeName, 
-          ex.GetType().FullName, 
+          shapeName,
+          ex.GetType().FullName,
           ex.Message );
 
         return Result.Failed;
