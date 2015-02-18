@@ -3,6 +3,9 @@ DirectObjLoader
 
 Revit add-in to load a WaveFront OBJ model and generate a DirectShape element from it.
 
+The initial implementation and development history is documented in the article
+[From Hack to App - OBJ Mesh Import to DirectShape](http://thebuildingcoder.typepad.com/blog/2015/02/from-hack-to-app-obj-mesh-import-to-directshape.html).
+
 ![Image](img/DirectObjLoader_app_2.png)
 
 Sample fire hydrant OBJ file:
