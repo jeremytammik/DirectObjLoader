@@ -51,7 +51,13 @@ Wish List
 Author
 ------
 
-Jeremy Tammik, [The Building Coder](http://thebuildingcoder.typepad.com), Autodesk Inc.
+Jeremy Tammik,
+[The Building Coder](http://thebuildingcoder.typepad.com) and
+[The 3D Web Coder](http://the3dwebcoder.typepad.com),
+[ADN](http://www.autodesk.com/adn)
+[Open](http://www.autodesk.com/adnopen),
+[Autodesk Inc.](http://www.autodesk.com)
+
 
 
 Dependencies
