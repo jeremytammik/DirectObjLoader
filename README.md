@@ -3,7 +3,7 @@ DirectObjLoader
 
 Revit add-in to load a WaveFront OBJ model and generate a DirectShape element from it.
 
-The Building Coder provides a dedicated topic gropup where you
+The Building Coder provides a dedicated topic group where you
 can [read all there is to know about the DirectShape Element](http://thebuildingcoder.typepad.com/blog/about-the-author.html#5.50).
 
 The initial implementation and development history is documented in the article
