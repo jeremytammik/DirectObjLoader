@@ -122,16 +122,31 @@ namespace DirectObjLoader
       // handling of target and fallback and the 
       // possible combinations.
 
-      TessellatedShapeBuilderResult r
-        = builder.Build(
-          TessellatedShapeBuilderTarget.AnyGeometry,
-          TessellatedShapeBuilderFallback.Mesh,
-          graphicsStyleId );
+      //TessellatedShapeBuilderResult r // 2015
+      //  = builder.Build(
+      //    TessellatedShapeBuilderTarget.AnyGeometry,
+      //    TessellatedShapeBuilderFallback.Mesh,
+      //    graphicsStyleId );
+
+      builder.Target = TessellatedShapeBuilderTarget.AnyGeometry; // 2017
+      builder.Fallback = TessellatedShapeBuilderFallback.Mesh; // 2017
+      builder.GraphicsStyleId = graphicsStyleId; // 2017
+
+      builder.Build(); // 2017
+
+      //TessellatedShapeBuilderResult r // 2015
 
       DirectShape ds = DirectShape.CreateElement(
-        doc, _categoryId, appGuid, shapeName );
+        //doc, _categoryId, appGuid, shapeName ); // 2015
+        doc, _categoryId ); // 2017
 
-      ds.SetShape( r.GetGeometricalObjects() );
+      ds.ApplicationId = appGuid; // 2017
+      ds.ApplicationDataId = shapeName; // 2017
+
+      //ds.SetShape( r.GetGeometricalObjects() ); // 2015
+
+      ds.SetShape( builder.GetBuildResult().GetGeometricalObjects() ); // 2017
+
       ds.Name = shapeName;
 
       Debug.Print(
